@@ -1,0 +1,115 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    static int[] getMinimumDifference(String[] a, String[] b) {
+        
+        HashMap<Character,Integer> hm=new HashMap<>();
+        int arr[]=new int[a.length];
+        
+        int x=0;
+        for(int k=0;k<a.length;k++) {
+            
+            if(a[k].length() == b[k].length()) {
+                
+                String str="abcdefghijklmnopqrstuvwxyz";
+
+                for(char i: str.toCharArray()) {
+                    hm.put(i,0);
+                }
+                    
+                //System.out.println("Yes " + k);
+                
+               for(char i : a[k].toCharArray())  {
+                    if(hm.containsKey(i)) {
+                        Integer count=hm.get(i) +1;
+                        hm.put(i,count);
+                    }
+                    else 
+                        hm.put(i,1);
+               }
+                
+                for(char j : b[k].toCharArray())  {
+                    if(hm.containsKey(j)) {
+                        Integer count=hm.get(j) -1;
+                        hm.put(j,count);
+                    }
+                    else 
+                        hm.put(j,1);
+               }
+                
+                int c=0;
+                for(Integer l : hm.values()) {
+                    //c += Math.abs(l);
+                    if(l != 0)
+                        c += Math.abs(l);
+                }
+                arr[k]=c/2;
+                //System.out.println(c/2);
+                //System.out.println();
+                   
+            }   
+            else {
+                //System.out.println("No " + k);  
+                
+                arr[k] = -1;
+            }
+
+        }
+        
+        for(int i=0;i<a.length;i++) {
+            System.out.println(arr[i]);
+        }
+        
+        return arr;        
+        
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int aCount = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        String[] a = new String[aCount];
+
+        for (int i = 0; i < aCount; i++) {
+            String aItem = scanner.nextLine();
+            a[i] = aItem;
+        }
+
+        int bCount = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        String[] b = new String[bCount];
+
+        for (int i = 0; i < bCount; i++) {
+            String bItem = scanner.nextLine();
+            b[i] = bItem;
+        }
+
+        int[] res = getMinimumDifference(a, b);
+
+        for (int i = 0; i < res.length; i++) {
+            bufferedWriter.write(String.valueOf(res[i]));
+
+            if (i != res.length - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
